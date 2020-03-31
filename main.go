@@ -18,6 +18,8 @@ import (
 	"time"
 )
 
+const protocolARP = 0x0806
+
 type Frame struct {
 	FrameID   uint16
 	LastChunk uint16
@@ -255,7 +257,7 @@ func BroadcastWakeups(ifname string, sendermac string) {
 	packet = append(macbytes[:6], packet[6:]...)
 
 	for {
-		conn, err := raw.ListenPacket(ifc, raw.ProtocolARP)
+		conn, err := raw.ListenPacket(ifc, protocolARP, nil)
 		if err != nil {
 			log.Fatalf("Unable to keep broadcasting the keepalives, %s", err.Error())
 		}
